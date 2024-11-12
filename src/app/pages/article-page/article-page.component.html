@@ -1,1 +1,20 @@
-<p>Article id {{ articleId }}</p>
+<div class="article-page">
+  <div class="article-header">
+    <div class="article-image-container">
+      <img class="article-image" [src]="article.image" [alt]="article.image" />
+    </div>
+    <span class="article-like" (click)="handleLike(article)">
+      {{ article.isLiked ? "♥" : "♡" }}
+    </span>
+    <span class="article-category">{{ article.categoryName }}</span>
+  </div>
+
+  <div class="article-details">
+    <h2 class="article-title">{{ article.title }}</h2>
+    <p class="article-date">{{ article.createdAt | date : "dd/MM/yyyy" }}</p>
+    <p class="article-nbLikes">
+      {{ article.likeCount }} {{ article.likeCount === 1 ? "like" : "likes" }}
+    </p>
+  </div>
+  <p class="article-content">{{ article.content }}</p>
+</div>
