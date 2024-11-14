@@ -7,19 +7,18 @@ import { Article } from '../models/article.model';
   providedIn: 'root',
 })
 export class ApiService {
-  constructor() {}
 
-  //private apiUrl = 'http://localhost:3000/articles';
+  private _ARTICLE_DB = 'http://localhost:3000/articles';
+  articles!: Article[];
 
-  //private http = inject(HttpClient);
+  constructor(private http: HttpClient) {
+  }
 
-  // Méthode pour récupérer tous les articles
-  //getArticles(): Observable<Article[]> {
-  //return this.http.get<Article[]>(this.apiUrl);
-  //}
+  getArticles(): Observable<Article[]> {
+    return this.http.get<Article[]>(this._ARTICLE_DB);
+  }
 
-  // Méthode pour récupérer un article par id
-  //getArticleById(id: number): Observable<Article> {
-  // return this.http.get<Article>(`${this.apiUrl}/${id}`);
-  //}
+  getArticleById(id: number): Observable<Article> {
+    return this.http.get<Article>(`${this._ARTICLE_DB}/${id}`);
+  }
 }

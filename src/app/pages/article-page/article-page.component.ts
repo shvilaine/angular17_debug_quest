@@ -1,8 +1,10 @@
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { ApiService } from './../../services/api.service';
+import { HttpClientModule } from '@angular/common/http';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Article } from '../../models/article.model';
 import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-article-page',
@@ -12,27 +14,18 @@ import { CommonModule } from '@angular/common';
   styleUrl: './article-page.component.scss'
 })
 
-export class ArticlePageComponent {
+export class ArticlePageComponent implements OnInit {
 
-  route = inject(ActivatedRoute);
-  http = inject(HttpClient);
+  private route: ActivatedRoute = inject(ActivatedRoute);
+  private apiService: ApiService = inject(ApiService);
   articleId!: number;
-  article!: Article;
-
-  ARTICLE_DB = 'http://localhost:3000/articles';
-
-  getArticleById(id: number) {
-    this.http.get<Article>(`${this.ARTICLE_DB}/${id}`).subscribe({
-      next: (data) => {this.article = data},
-      error: (error) => {console.error('Erreur: ', error);}
-  });
-}
+  article$!: Observable<Article>;
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.articleId = Number(params.get('id'));
     });
-    this.getArticleById(this.articleId);
+    this.article$ = this.apiService.getArticleById(this.articleId);
   }
 
   handleLike(article: Article) {

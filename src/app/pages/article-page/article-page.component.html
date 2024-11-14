@@ -1,3 +1,4 @@
+@if(article$ | async; as article) {
 <div class="article-page">
   <div class="article-header">
     <div class="article-image-container">
@@ -18,3 +19,4 @@
   </div>
   <p class="article-content">{{ article.content }}</p>
 </div>
+}

@@ -1,3 +1,4 @@
+import { ApiService } from './../../services/api.service';
 import { Component, inject, Injectable } from '@angular/core';
 import { Article } from '../../models/article.model';
 import { ArticleThumbnailComponent } from '../article-thumbnail/article-thumbnail.component';
@@ -15,20 +16,15 @@ import { Observable } from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class ArticleListComponent {
-  ARTICLE_DB = 'http://localhost:3000/articles';
-  articles!: Article[];
 
-  constructor(private http: HttpClient) {
+  articles$!: Observable<Article[]>;
+  private http: HttpClient = inject(HttpClient);
+  private apiService: ApiService = inject(ApiService);
+  constructor() {
   }
 
   ngOnInit() {
-    this.getArticles();
-  }
-
-  getArticles(): void {
-    this.http.get<Article[]>(this.ARTICLE_DB)
-    .subscribe((articles: Article[]) => this.articles = articles
-    );
+    this.articles$ = this.apiService.getArticles();
   }
 
   handleLike(article: Article) {
